@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: 'true'
+          lower-case-service-id: 'true'
+      routes:
+      - id: auth
+        uri: http://auth
+        predicates:
+          - Path=/auth
+      - id: buys
+        uri: http://buys
+        predicates:
+          - Path=/buys
+      - id: shops
+        uri: http://shops
+        predicates:
+          - Path=/shops
+      - id: factories
+        uri: http://factories
+        predicates:
+          - Path=/factories
+server:
+  port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

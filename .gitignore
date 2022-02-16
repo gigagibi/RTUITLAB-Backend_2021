@@ -1,0 +1,5 @@
+# Project exclude paths
+/auth/target/
+/eureka/target/
+/gateway/target/
+/shops/target/
