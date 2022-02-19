@@ -24,6 +24,7 @@
         <spring.boot.dependencies.version>2.6.3</spring.boot.dependencies.version>
         <com.auth0.java-jwt.version>3.18.3</com.auth0.java-jwt.version>
         <org.postgresql.postgresql.version>42.3.1</org.postgresql.postgresql.version>
+        <org.projectlombok.lombok.version>1.18.22</org.projectlombok.lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -51,6 +52,12 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
+                <version>${org.projectlombok.lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${org.postgresql.postgresql.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

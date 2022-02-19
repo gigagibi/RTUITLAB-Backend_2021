@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/rtu_auth</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="MongoDB - rtu_shops@localhost" uuid="dec50bb4-9615-4fff-9802-37761fc6831b">
+      <driver-ref>mongo</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://localhost:27017/rtu_shops</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
