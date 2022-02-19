@@ -1,10 +1,9 @@
-package rtulab.shops.models.mongo;
+package rtulab.shops.models.mongoDocuments;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -13,11 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Cart {
+public class Shop {
     @Id
     private String id;
-    private String username;
-
-    @DBRef
+    private String name;
+    private String address;
+    private String phone;
     private List<Good> goods;
 }

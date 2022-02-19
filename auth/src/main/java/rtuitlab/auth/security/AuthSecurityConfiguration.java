@@ -1,6 +1,7 @@
 package rtuitlab.auth.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,10 @@ import rtuitlab.auth.services.CustomUserDetailsService;
 public class AuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -26,7 +31,7 @@ public class AuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtFilter(authenticationManager(), jwtSecret), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package rtulab.shops.models.mongo;
+package rtulab.shops.models.mongoDocuments;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +14,4 @@ public class Category {
     @Id
     private String id;
     private String name;
-
 }
