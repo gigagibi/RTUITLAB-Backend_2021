@@ -1,13 +1,25 @@
 package rtuitlab.buys.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import rtuitlab.buys.models.Receipt;
 import rtuitlab.buys.services.ReceiptService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/receipts")
 @AllArgsConstructor
 public class ReceiptController {
     private ReceiptService receiptService;
+
+    @GetMapping("/my")
+    public List<Receipt> getMyReceipts(@RequestHeader("Authorization") String token) {
+        return receiptService.getByToken(token);
+    }
+
+    @GetMapping("/my/{receipt_id}")
+    public Receipt getReceipt(@RequestHeader("Authorization") String token, @PathVariable(name = "receipt_id") Long receiptId) {
+        return receiptService.getByTokenAndId(token, receiptId);
+    }
 }

@@ -15,5 +15,12 @@
       <jdbc-url>mongodb://localhost:27017/rtu_shops</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="rtu_buys@localhost" uuid="43d83cfb-691f-4aef-b80f-8e51a4e6dbe0">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/rtu_buys</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

@@ -1,12 +1,12 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     generate-ddl: true
   application:
     name: buys
   datasource:
-    url: jdbc:postgresql://localhost:5432/rtu_auth
+    url: jdbc:postgresql://localhost:5432/rtu_buys
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: root

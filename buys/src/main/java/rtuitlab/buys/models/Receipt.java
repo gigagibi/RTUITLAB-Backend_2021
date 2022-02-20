@@ -15,11 +15,16 @@ public class Receipt {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "username")
+    private String username;
+
     @Column(name = "payment_method")
     private String paymentMethod;
 
     @Column(name = "shop_id")
     private String shopId;
+
+
 
     @OneToMany(cascade = CascadeType.MERGE)
     private Set<BoughtGood> boughtGoods;
