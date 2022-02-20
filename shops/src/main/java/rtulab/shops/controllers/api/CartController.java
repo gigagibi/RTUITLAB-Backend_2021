@@ -45,7 +45,12 @@ public class CartController {
         return cartService.update(cartId, cart);
     }
 
-    @PostMapping("/good")
+    @GetMapping("/my_cart")
+    public Cart getUsersCart(@RequestHeader("Authorization") String token) {
+        return cartService.getByToken(token);
+    }
+
+    @PostMapping("/my_cart")
     public Cart putGoodInCart(@RequestHeader("Authorization") String token, @RequestBody GoodInCart goodInCart) {
         try {
             return cartService.putGoodInCart(token, goodInCart);
@@ -54,9 +59,13 @@ public class CartController {
         }
     }
 
-    @GetMapping("/my_cart")
-    public Cart getUsersCart(@RequestHeader("Authorization") String token) {
-        return cartService.getByToken(token);
+    @DeleteMapping("/my_cart")
+    public Cart removeGoodFromCart(@RequestHeader("Authorization") String token, @RequestBody GoodInCart goodInCart) {
+        try {
+            return cartService.removeGoodFromCart(token, goodInCart);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No good found in cart");
+        }
     }
 
 }

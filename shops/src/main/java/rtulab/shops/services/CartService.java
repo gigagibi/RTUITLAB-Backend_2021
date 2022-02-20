@@ -64,6 +64,9 @@ public class CartService {
                 int oldIndex = cart.getBoughtGoods().indexOf(cart.getBoughtGoods().stream().filter(g -> g.getGoodId().equals(goodInCart.getGoodId())).findAny().get());
                 cart.getBoughtGoods().set(oldIndex, goodInCart);
             }
+            else {
+                cart.getBoughtGoods().add(goodInCart);
+            }
         }
         else { //if user doesn't have a cart, creates it and put good
             cart = new Cart();
@@ -77,5 +80,29 @@ public class CartService {
         }
         else
             throw new TooManyBoughtGoodsException();
+    }
+
+    public Cart removeGoodFromCart(String token, GoodInCart goodInCart) throws Exception {
+        String username = JWT.decode(token.substring(7)).getSubject();
+        Cart cart = cartRepository.getByUsername(username);
+        Good good = goodRepository.getById(goodInCart.getGoodId());
+        if(cart!=null && good!= null) {
+            goodInCart.setBoughtAmount(
+                     cart.getBoughtGoods().stream()
+                             .filter(g -> g.getGoodId().equals(goodInCart.getGoodId()))
+                             .findAny()
+                             .orElse(new GoodInCart())
+                             .getBoughtAmount() - goodInCart.getBoughtAmount()
+
+            );
+            int oldIndex = cart.getBoughtGoods().indexOf(cart.getBoughtGoods().stream().filter(g -> g.getGoodId().equals(goodInCart.getGoodId())).findAny().get());
+            if(goodInCart.getBoughtAmount()>0)
+                cart.getBoughtGoods().set(oldIndex, goodInCart);
+            else
+                cart.getBoughtGoods().remove(oldIndex);
+            return cartRepository.save(cart);
+        }
+        else
+            throw new Exception();
     }
 }
