@@ -1,7 +1,6 @@
 package rtulab.shops.services;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rtulab.shops.models.mongoDocuments.Shop;
 import rtulab.shops.repositories.ShopRepository;
@@ -21,13 +20,14 @@ public class ShopService {
         return shopRepository.findAll();
     }
 
-    public List<Shop> create(Shop cart) {
-        shopRepository.insert(cart);
-        return shopRepository.findAll();
+    public Shop update(String id, Shop newShop) {
+        newShop.setId(id);
+        return shopRepository.save(newShop);
     }
 
-    public Shop update(String id, Shop newShop) {
-        return shopRepository.save(newShop);
+    public List<Shop> create(Shop cart) {
+        shopRepository.save(cart);
+        return shopRepository.findAll();
     }
     
     public List<Shop> delete(String id) {

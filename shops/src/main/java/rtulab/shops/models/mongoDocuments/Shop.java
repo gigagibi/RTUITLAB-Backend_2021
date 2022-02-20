@@ -18,5 +18,5 @@ public class Shop {
     private String name;
     private String address;
     private String phone;
-    private List<Good> goods;
+    private List<String> goodsIds;
 }

@@ -18,5 +18,6 @@ public class Good {
     private String name;
     private Integer cost;
     private Integer amount;
-    private List<Category> categories;
+    private List<String> categoriesIds;
+    private String shopId;
 }

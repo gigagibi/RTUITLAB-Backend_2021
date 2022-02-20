@@ -11,6 +11,6 @@ import rtulab.shops.models.mongoDocuments.Good;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GoodInCart {
-    private Good good;
+    private String goodId;
     private int boughtAmount;
 }

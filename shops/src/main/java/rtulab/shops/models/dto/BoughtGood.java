@@ -9,4 +9,5 @@ public class BoughtGood {
     private String name;
     private Integer cost;
     private List<Category> categories;
+    private String shopId;
 }

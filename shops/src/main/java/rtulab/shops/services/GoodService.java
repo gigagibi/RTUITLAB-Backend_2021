@@ -1,7 +1,6 @@
 package rtulab.shops.services;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rtulab.shops.models.mongoDocuments.Good;
 import rtulab.shops.repositories.GoodRepository;
@@ -27,11 +26,20 @@ public class GoodService {
     }
 
     public Good update(String id, Good newGood) {
+        newGood.setId(id);
         return goodRepository.save(newGood);
     }
 
     public List<Good> delete(String id) {
         goodRepository.deleteById(id);
         return goodRepository.findAll();
+    }
+
+    public Good getByIdFromShop(String shopId, String goodId) {
+        return goodRepository.getGoodByShopIdAndId(shopId, goodId);
+    }
+
+    public List<Good> getAllFromShop(String shopId) {
+        return goodRepository.getAllByShopId(shopId);
     }
 }

@@ -8,9 +8,9 @@ import rtulab.shops.services.ShopService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/shops")
 @AllArgsConstructor
-public class ShopController {
+public class  ShopController {
     private ShopService shopService;
 
     @GetMapping("/")
@@ -19,7 +19,7 @@ public class ShopController {
     }
 
     @GetMapping("/{shop_id}")
-    public Shop getShops(@PathVariable(name = "shop_id") String shopId) {
+    public Shop getShopInfo(@PathVariable(name = "shop_id") String shopId) {
         return shopService.get(shopId);
     }
 
@@ -28,8 +28,13 @@ public class ShopController {
         return shopService.create(shop);
     }
 
-    @DeleteMapping("/{shop_id}")
+    @DeleteMapping("/admin/{shop_id}")
     public List<Shop> deleteShop(@PathVariable(name = "shop_id") String shopId) {
         return shopService.delete(shopId);
+    }
+
+    @PutMapping("/admin/{shop_id}")
+    public Shop updateShop(@PathVariable(name = "shop_id") String shopId, @RequestBody Shop shop) {
+        return shopService.update(shopId, shop);
     }
 }
