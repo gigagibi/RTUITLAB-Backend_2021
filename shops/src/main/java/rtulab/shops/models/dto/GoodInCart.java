@@ -1,4 +1,4 @@
-package rtulab.shops.models;
+package rtulab.shops.models.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
