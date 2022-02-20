@@ -19,5 +19,5 @@ public class Cart {
     @Id
     private String id;
     private String username;
-    private List<GoodInCart> boughtGoods;
+    private List<GoodInCart> goodInCarts;
 }

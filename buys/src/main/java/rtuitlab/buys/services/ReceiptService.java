@@ -3,6 +3,7 @@ package rtuitlab.buys.services;
 import com.auth0.jwt.JWT;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rtuitlab.buys.models.Receipt;
 import rtuitlab.buys.repositories.ReceiptRepository;
 
@@ -22,7 +23,7 @@ public class ReceiptService {
     }
 
     public List<Receipt> create(Receipt receipt) {
-        receiptRepository.saveAndFlush(receipt);
+        receiptRepository.save(receipt);
         return receiptRepository.findAll();
     }
 

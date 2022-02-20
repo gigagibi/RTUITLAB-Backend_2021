@@ -2,22 +2,34 @@ package rtulab.shops.services;
 
 import com.auth0.jwt.JWT;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import rtulab.shops.models.dto.BoughtGood;
 import rtulab.shops.models.dto.GoodInCart;
+import rtulab.shops.models.dto.Receipt;
 import rtulab.shops.models.mongoDocuments.Cart;
+import rtulab.shops.models.mongoDocuments.Category;
 import rtulab.shops.models.mongoDocuments.Good;
 import rtulab.shops.repositories.CartRepository;
+import rtulab.shops.repositories.CategoryRepository;
 import rtulab.shops.repositories.GoodRepository;
 import rtulab.shops.services.exceptions.TooManyBoughtGoodsException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class CartService {
     private CartRepository cartRepository;
     private GoodRepository goodRepository;
+    private CategoryRepository categoryRepository;
+    private RestTemplate restTemplate;
 
     public Cart get(String id) {
         return cartRepository.getById(id);
@@ -52,28 +64,28 @@ public class CartService {
         Cart cart = cartRepository.getByUsername(username);
         Good good = goodRepository.getById(goodInCart.getGoodId());
         if(cart!=null) { //if cart exists
-            if(cart.getBoughtGoods().stream().anyMatch(g -> g.getGoodId().equals(goodInCart.getGoodId()))) { //if good is already in cart, increase amount of it and replace good in cart
+            if(cart.getGoodInCarts().stream().anyMatch(g -> g.getGoodId().equals(goodInCart.getGoodId()))) { //if good is already in cart, increase amount of it and replace good in cart
                 goodInCart.setBoughtAmount(
-                        goodInCart.getBoughtAmount() + cart.getBoughtGoods()
+                        goodInCart.getBoughtAmount() + cart.getGoodInCarts()
                         .stream()
                         .filter(g -> g.getGoodId().equals(goodInCart.getGoodId()))
                         .findAny()
                         .orElse(new GoodInCart())
                         .getBoughtAmount()
                 );
-                int oldIndex = cart.getBoughtGoods().indexOf(cart.getBoughtGoods().stream().filter(g -> g.getGoodId().equals(goodInCart.getGoodId())).findAny().get());
-                cart.getBoughtGoods().set(oldIndex, goodInCart);
+                int oldIndex = cart.getGoodInCarts().indexOf(cart.getGoodInCarts().stream().filter(g -> g.getGoodId().equals(goodInCart.getGoodId())).findAny().get());
+                cart.getGoodInCarts().set(oldIndex, goodInCart);
             }
             else {
-                cart.getBoughtGoods().add(goodInCart);
+                cart.getGoodInCarts().add(goodInCart);
             }
         }
         else { //if user doesn't have a cart, creates it and put good
             cart = new Cart();
             cart.setId(Integer.toString(username.toLowerCase().hashCode()));
             cart.setUsername(username);
-            cart.setBoughtGoods(new ArrayList<>());
-            cart.getBoughtGoods().add(goodInCart);
+            cart.setGoodInCarts(new ArrayList<>());
+            cart.getGoodInCarts().add(goodInCart);
         }
         if(good.getAmount() >= goodInCart.getBoughtAmount()) { //in 3rd case, when user have a cart but there is no good that he's trying to add, its just put good in cart
             return cartRepository.save(cart);
@@ -88,21 +100,48 @@ public class CartService {
         Good good = goodRepository.getById(goodInCart.getGoodId());
         if(cart!=null && good!= null) {
             goodInCart.setBoughtAmount(
-                     cart.getBoughtGoods().stream()
+                     cart.getGoodInCarts().stream()
                              .filter(g -> g.getGoodId().equals(goodInCart.getGoodId()))
                              .findAny()
                              .orElse(new GoodInCart())
                              .getBoughtAmount() - goodInCart.getBoughtAmount()
 
             );
-            int oldIndex = cart.getBoughtGoods().indexOf(cart.getBoughtGoods().stream().filter(g -> g.getGoodId().equals(goodInCart.getGoodId())).findAny().get());
+            int oldIndex = cart.getGoodInCarts().indexOf(cart.getGoodInCarts().stream().filter(g -> g.getGoodId().equals(goodInCart.getGoodId())).findAny().get());
             if(goodInCart.getBoughtAmount()>0)
-                cart.getBoughtGoods().set(oldIndex, goodInCart);
+                cart.getGoodInCarts().set(oldIndex, goodInCart);
             else
-                cart.getBoughtGoods().remove(oldIndex);
+                cart.getGoodInCarts().remove(oldIndex);
             return cartRepository.save(cart);
         }
         else
             throw new Exception();
+    }
+
+    public String buyAllFromCart(String token, String paymentMethod) {
+        String username = JWT.decode(token.substring(7)).getSubject();
+        Cart cart = cartRepository.getByUsername(username);
+        ArrayList<BoughtGood> boughtGoods = new ArrayList<>();
+        List<GoodInCart> goodInCarts = cart.getGoodInCarts();
+        String shopId = goodRepository.getById(goodInCarts.get(0).getGoodId()).getShopId();
+        for (GoodInCart goodInCart: goodInCarts) {
+            Good good = goodRepository.getById(goodInCart.getGoodId());
+            boughtGoods.add(
+                    new BoughtGood(good.getName(),
+                            good.getId(),
+                            good.getCost(),
+                            goodInCart.getBoughtAmount(),
+                            good.getCategoriesIds().stream().map(i -> categoryRepository.getById(i)).collect(Collectors.toList())));
+        }
+        Receipt receipt = new Receipt(username, paymentMethod, shopId, boughtGoods);
+        cart.getGoodInCarts().clear();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setBearerAuth(token.substring(7));
+        HttpEntity<Receipt> request = new HttpEntity<>(receipt, headers);
+        restTemplate.postForObject("http://buys/api/receipts/my", request, Receipt.class);
+        return "OK";
     }
 }

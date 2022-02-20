@@ -1,14 +1,18 @@
 package rtuitlab.buys.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Receipt {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,9 +28,10 @@ public class Receipt {
     @Column(name = "shop_id")
     private String shopId;
 
-
-
-    @OneToMany(cascade = CascadeType.MERGE)
-    private Set<BoughtGood> boughtGoods;
+    @OneToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE}
+    )
+    private List<BoughtGood> boughtGoods;
 
 }

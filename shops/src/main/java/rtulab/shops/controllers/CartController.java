@@ -68,4 +68,9 @@ public class CartController {
         }
     }
 
+    @GetMapping("/my_cart/buy")
+    public String buyAllFromCart(@RequestHeader("Authorization") String token, @RequestParam(name = "payment_method") String paymentMethod) {
+        return cartService.buyAllFromCart(token, paymentMethod);
+    }
+
 }

@@ -22,4 +22,10 @@ public class ReceiptController {
     public Receipt getReceipt(@RequestHeader("Authorization") String token, @PathVariable(name = "receipt_id") Long receiptId) {
         return receiptService.getByTokenAndId(token, receiptId);
     }
+
+    @PostMapping("/my")
+    public List<Receipt> createReceipt(@RequestBody Receipt receipt) {
+//        return receiptService.create(new Receipt(0L, receipt.getUsername(), receipt.getPaymentMethod(), receipt.getShopId(), receipt.getBoughtGoods()));
+        return receiptService.create(receipt);
+    }
 }

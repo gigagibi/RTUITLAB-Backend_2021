@@ -1,9 +1,17 @@
 package rtulab.shops.models.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class Receipt {
-    private List<BoughtGood> boughtGoods;
-    private String shopId;
+    private String username;
     private String paymentMethod;
+    private String shopId;
+    private List<BoughtGood> boughtGoods;
 }

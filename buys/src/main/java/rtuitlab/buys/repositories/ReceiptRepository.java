@@ -16,5 +16,5 @@ public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
 
     @Modifying
     @Query(value = "update Receipt set paymentMethod=?2, shopId=?3, boughtGoods=?4 where id=?1")
-    Receipt update(Long id, String paymentMethod, String shopId, Set<BoughtGood> boughtGoods);
+    Receipt update(Long id, String paymentMethod, String shopId, List<BoughtGood> boughtGoods);
 }
