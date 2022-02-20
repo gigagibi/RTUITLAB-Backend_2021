@@ -1,4 +1,4 @@
-package rtulab.shops.authHandler;
+package rtuitlab.buys.authHandler;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @AllArgsConstructor
-public class AuthInterceptor implements HandlerInterceptor {
+public class AdminInterceptor implements HandlerInterceptor {
+    @Value("${jwt.secret}")
     private String jwtSecret;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -21,8 +22,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
             JWTVerifier verifier = JWT.require(algorithm)
+                    .withClaim("roles", "[ROLE_ADMIN]")
                     .build();
+            DecodedJWT decodedJWT = JWT.decode(token);
             DecodedJWT jwt = verifier.verify(token);
+            String claim = jwt.getPayload();
         } catch (JWTVerificationException exception){
             response.sendError(403, "Unauthorized");
             response.getOutputStream().write("Unauthorized".getBytes());
@@ -30,5 +34,4 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-
 }

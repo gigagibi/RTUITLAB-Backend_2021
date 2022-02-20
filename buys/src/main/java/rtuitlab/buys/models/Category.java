@@ -1,7 +1,6 @@
-package rtuitlab.auth.models.jpa;
+package rtuitlab.buys.models;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -10,8 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString
-public class Role {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -19,4 +17,5 @@ public class Role {
 
     @Column(name = "name")
     private String name;
+
 }

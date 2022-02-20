@@ -1,4 +1,4 @@
-package rtulab.shops.controllers.api;
+package rtulab.shops.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

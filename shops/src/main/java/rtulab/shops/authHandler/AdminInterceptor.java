@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @AllArgsConstructor
 public class AdminInterceptor implements HandlerInterceptor {
-    @Value("${jwt.secret}")
     private String jwtSecret;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

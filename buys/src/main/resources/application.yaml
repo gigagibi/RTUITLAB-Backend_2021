@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+  application:
+    name: buys
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rtu_auth
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+jwt:
+  secret: RTUITLAB

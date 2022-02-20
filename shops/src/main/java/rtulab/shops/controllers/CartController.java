@@ -1,4 +1,4 @@
-package rtulab.shops.controllers.api;
+package rtulab.shops.controllers;
 
 import com.auth0.jwt.JWT;
 import lombok.AllArgsConstructor;
