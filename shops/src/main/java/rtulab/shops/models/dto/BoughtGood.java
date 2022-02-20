@@ -8,6 +8,6 @@ public class BoughtGood {
     private String id;
     private String name;
     private Integer cost;
+    private Integer amount;
     private List<Category> categories;
-    private String shopId;
 }
