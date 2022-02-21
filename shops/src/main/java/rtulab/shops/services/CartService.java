@@ -2,12 +2,11 @@ package rtulab.shops.services;
 
 import com.auth0.jwt.JWT;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import rtulab.shops.exceptions.BuysServiceInternalErrorException;
+import rtulab.shops.exceptions.BuysServiceNotFoundException;
 import rtulab.shops.models.dto.buysService.BoughtGood;
 import rtulab.shops.models.dto.buysService.GoodInCart;
 import rtulab.shops.models.dto.buysService.Receipt;
@@ -16,7 +15,7 @@ import rtulab.shops.models.mongoDocuments.Good;
 import rtulab.shops.repositories.CartRepository;
 import rtulab.shops.repositories.CategoryRepository;
 import rtulab.shops.repositories.GoodRepository;
-import rtulab.shops.services.exceptions.TooManyBoughtGoodsException;
+import rtulab.shops.exceptions.TooManyBoughtGoodsException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,7 +117,7 @@ public class CartService {
             throw new Exception();
     }
 
-    public String buyAllFromCart(String token, String paymentMethod) {
+    public String buyAllFromCart(String token, String paymentMethod) throws Exception {
         String username = JWT.decode(token.substring(7)).getSubject();
         Cart cart = cartRepository.getByUsername(username);
         ArrayList<BoughtGood> boughtGoods = new ArrayList<>();
@@ -143,7 +142,10 @@ public class CartService {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setBearerAuth(token.substring(7));
         HttpEntity<Receipt> request = new HttpEntity<>(receipt, headers);
-        ResponseEntity<Receipt> receiptResponseEntity = restTemplate.postForEntity("http://buys/api/receipts/my", request, Receipt.class);
-        System.out.println(receiptResponseEntity);
-        return "OK";
+        ResponseEntity<Receipt[]> receiptResponseEntity = restTemplate.postForEntity("http://buys/api/receipts/my", request, Receipt[].class);
+        if(receiptResponseEntity.getStatusCode() == HttpStatus.NOT_FOUND)
+            throw new BuysServiceNotFoundException();
+        else if(receiptResponseEntity.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new BuysServiceInternalErrorException();
+        else return receiptResponseEntity.toString();
     }}

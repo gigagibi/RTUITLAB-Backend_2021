@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import rtulab.shops.exceptions.BuysServiceInternalErrorException;
+import rtulab.shops.exceptions.BuysServiceNotFoundException;
 import rtulab.shops.models.dto.buysService.GoodInCart;
 import rtulab.shops.models.mongoDocuments.Cart;
 import rtulab.shops.services.CartService;
 import rtulab.shops.services.GoodService;
-import rtulab.shops.services.exceptions.TooManyBoughtGoodsException;
+import rtulab.shops.exceptions.TooManyBoughtGoodsException;
 
 import java.util.List;
 
@@ -69,7 +71,18 @@ public class CartController {
 
     @GetMapping("/my_cart/buy")
     public String buyAllFromCart(@RequestHeader("Authorization") String token, @RequestParam(name = "payment_method") String paymentMethod) {
-        return cartService.buyAllFromCart(token, paymentMethod);
+        try {
+            cartService.buyAllFromCart(token, paymentMethod);
+        }
+        catch (BuysServiceNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Buys Service cant be found");
+        }
+        catch (BuysServiceInternalErrorException ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Some internal error in buys service");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Bought all goods from cart";
     }
 
 }

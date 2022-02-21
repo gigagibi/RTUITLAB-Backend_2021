@@ -1,4 +1,4 @@
-package rtulab.shops.services.exceptions;
+package rtulab.shops.exceptions;
 
 public class TooManyBoughtGoodsException extends Exception{
 }
