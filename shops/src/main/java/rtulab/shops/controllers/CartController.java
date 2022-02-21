@@ -1,11 +1,10 @@
 package rtulab.shops.controllers;
 
-import com.auth0.jwt.JWT;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import rtulab.shops.models.dto.GoodInCart;
+import rtulab.shops.models.dto.buysService.GoodInCart;
 import rtulab.shops.models.mongoDocuments.Cart;
 import rtulab.shops.services.CartService;
 import rtulab.shops.services.GoodService;

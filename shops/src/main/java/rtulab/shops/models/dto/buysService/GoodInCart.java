@@ -1,10 +1,9 @@
-package rtulab.shops.models.dto;
+package rtulab.shops.models.dto.buysService;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rtulab.shops.models.mongoDocuments.Good;
 
 @Getter
 @Setter

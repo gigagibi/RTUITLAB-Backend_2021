@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import rtuitlab.buys.models.Category;
 
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<Category, String> {
     Category getByName(String name);
 
     @Modifying
     @Query(value = "update Category set name = ?2 where id = ?1")
-    Category update(Long id, String categoryName);
+    Category update(String id, String categoryName);
 }

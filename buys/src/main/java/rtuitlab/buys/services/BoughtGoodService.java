@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import rtuitlab.buys.models.BoughtGood;
 import rtuitlab.buys.repositories.BoughtGoodRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class BoughtGoodService {
     private BoughtGoodRepository boughtGoodRepository;
 
@@ -21,7 +23,7 @@ public class BoughtGoodService {
     }
 
     public List<BoughtGood> create(BoughtGood boughtGood) {
-        boughtGoodRepository.saveAndFlush(boughtGood);
+        boughtGoodRepository.save(boughtGood);
         return boughtGoodRepository.findAll();
     }
 

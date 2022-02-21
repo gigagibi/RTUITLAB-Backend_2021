@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -16,7 +15,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class BoughtGood {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bg_seq_gen")
+    @SequenceGenerator(name="bg_seq_gen", sequenceName="bough_good_sequence")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -32,9 +32,6 @@ public class BoughtGood {
     @Column(name = "amount")
     private Integer amount;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany(cascade = {CascadeType.MERGE})
     private List<Category> categories;
 }

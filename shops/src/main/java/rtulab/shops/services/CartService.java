@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import rtulab.shops.models.dto.BoughtGood;
-import rtulab.shops.models.dto.GoodInCart;
-import rtulab.shops.models.dto.Receipt;
+import rtulab.shops.models.dto.buysService.BoughtGood;
+import rtulab.shops.models.dto.buysService.GoodInCart;
+import rtulab.shops.models.dto.buysService.Receipt;
 import rtulab.shops.models.mongoDocuments.Cart;
-import rtulab.shops.models.mongoDocuments.Category;
 import rtulab.shops.models.mongoDocuments.Good;
 import rtulab.shops.repositories.CartRepository;
 import rtulab.shops.repositories.CategoryRepository;
@@ -132,6 +132,8 @@ public class CartService {
                             good.getCost(),
                             goodInCart.getBoughtAmount(),
                             good.getCategoriesIds().stream().map(i -> categoryRepository.getById(i)).collect(Collectors.toList())));
+            good.setAmount(good.getAmount()-goodInCart.getBoughtAmount());
+            goodRepository.save(good);
         }
         Receipt receipt = new Receipt(username, paymentMethod, shopId, boughtGoods);
         cart.getGoodInCarts().clear();
@@ -141,7 +143,7 @@ public class CartService {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setBearerAuth(token.substring(7));
         HttpEntity<Receipt> request = new HttpEntity<>(receipt, headers);
-        restTemplate.postForObject("http://buys/api/receipts/my", request, Receipt.class);
+        ResponseEntity<Receipt> receiptResponseEntity = restTemplate.postForEntity("http://buys/api/receipts/my", request, Receipt.class);
+        System.out.println(receiptResponseEntity);
         return "OK";
-    }
-}
+    }}

@@ -1,5 +1,6 @@
-package rtulab.shops.models.dto;
+package rtulab.shops.models.dto.buysService;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,6 @@ public class BoughtGood {
     private String goodId;
     private Integer cost;
     private Integer amount;
+    @JsonProperty("categories")
     private List<Category> categories;
 }

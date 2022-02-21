@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import rtulab.shops.models.dto.GoodInCart;
+import rtulab.shops.models.dto.buysService.GoodInCart;
 
 import java.util.List;
 

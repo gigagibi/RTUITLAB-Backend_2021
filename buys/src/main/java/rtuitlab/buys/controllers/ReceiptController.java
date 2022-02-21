@@ -25,7 +25,6 @@ public class ReceiptController {
 
     @PostMapping("/my")
     public List<Receipt> createReceipt(@RequestBody Receipt receipt) {
-//        return receiptService.create(new Receipt(0L, receipt.getUsername(), receipt.getPaymentMethod(), receipt.getShopId(), receipt.getBoughtGoods()));
         return receiptService.create(receipt);
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,7 +16,7 @@ import javax.persistence.*;
 public class Category {
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;

@@ -15,7 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Receipt {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rcpt_seq_gen")
+    @SequenceGenerator(name="rcpt_seq_gen", sequenceName="receipt_sequence")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -28,10 +29,7 @@ public class Receipt {
     @Column(name = "shop_id")
     private String shopId;
 
-    @OneToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE}
-    )
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<BoughtGood> boughtGoods;
 
 }
