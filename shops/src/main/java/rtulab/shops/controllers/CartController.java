@@ -47,32 +47,32 @@ public class CartController {
     }
 
     @GetMapping("/my_cart")
-    public Cart getUsersCart(@RequestHeader("Authorization") String token) {
-        return cartService.getByToken(token);
+    public Cart getUsersCarts(@RequestHeader("Authorization") String token, @RequestParam(name = "shop_id") String shopId) {
+        return cartService.getByToken(token, shopId);
     }
 
     @PostMapping("/my_cart")
-    public Cart putGoodInCart(@RequestHeader("Authorization") String token, @RequestBody GoodInCart goodInCart) {
+    public Cart putGoodInCart(@RequestHeader("Authorization") String token, @RequestParam(name = "shop_id") String shopId, @RequestBody GoodInCart goodInCart) {
         try {
-            return cartService.putGoodInCart(token, goodInCart);
+            return cartService.putGoodInCart(token, shopId, goodInCart);
         } catch (TooManyBoughtGoodsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Too many goods");
         }
     }
 
     @DeleteMapping("/my_cart")
-    public Cart removeGoodFromCart(@RequestHeader("Authorization") String token, @RequestBody GoodInCart goodInCart) {
+    public Cart removeGoodFromCart(@RequestHeader("Authorization") String token, @RequestParam(name = "shop_id") String shopId, @RequestBody GoodInCart goodInCart) {
         try {
-            return cartService.removeGoodFromCart(token, goodInCart);
+            return cartService.removeGoodFromCart(token, shopId, goodInCart);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No good found in cart");
         }
     }
 
     @GetMapping("/my_cart/buy")
-    public String buyAllFromCart(@RequestHeader("Authorization") String token, @RequestParam(name = "payment_method") String paymentMethod) {
+    public String buyAllFromCart(@RequestHeader("Authorization") String token, @RequestParam(name = "shop_id") String shopId, @RequestParam(name = "payment_method") String paymentMethod) {
         try {
-            cartService.buyAllFromCart(token, paymentMethod);
+            cartService.buyAllFromCart(token, shopId, paymentMethod);
         }
         catch (BuysServiceNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Buys Service cant be found");
@@ -84,5 +84,4 @@ public class CartController {
         }
         return "Bought all goods from cart";
     }
-
 }

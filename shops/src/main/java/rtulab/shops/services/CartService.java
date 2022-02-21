@@ -43,9 +43,9 @@ public class CartService {
         return cartRepository.findAll();
     }
 
-    public Cart getByToken(String token) {
+    public Cart getByToken(String token, String shopId) {
         String username = JWT.decode(token.substring(7)).getSubject();
-        return cartRepository.getByUsername(username);
+        return cartRepository.getByUsernameAndShopId(username, shopId);
     }
 
     public Cart update(String id, Cart newCart) {
@@ -58,9 +58,9 @@ public class CartService {
         return cartRepository.findAll();
     }
 
-    public Cart putGoodInCart(String token, GoodInCart goodInCart) throws TooManyBoughtGoodsException {
+    public Cart putGoodInCart(String token, String shopId, GoodInCart goodInCart) throws TooManyBoughtGoodsException {
         String username = JWT.decode(token.substring(7)).getSubject();
-        Cart cart = cartRepository.getByUsername(username);
+        Cart cart = cartRepository.getByUsernameAndShopId(username, shopId);
         Good good = goodRepository.getById(goodInCart.getGoodId());
         if(cart!=null) { //if cart exists
             if(cart.getGoodInCarts().stream().anyMatch(g -> g.getGoodId().equals(goodInCart.getGoodId()))) { //if good is already in cart, increase amount of it and replace good in cart
@@ -83,6 +83,7 @@ public class CartService {
             cart = new Cart();
             cart.setId(Integer.toString(username.toLowerCase().hashCode()));
             cart.setUsername(username);
+            cart.setShopId(shopId);
             cart.setGoodInCarts(new ArrayList<>());
             cart.getGoodInCarts().add(goodInCart);
         }
@@ -93,9 +94,9 @@ public class CartService {
             throw new TooManyBoughtGoodsException();
     }
 
-    public Cart removeGoodFromCart(String token, GoodInCart goodInCart) throws Exception {
+    public Cart removeGoodFromCart(String token, String shopId, GoodInCart goodInCart) throws Exception {
         String username = JWT.decode(token.substring(7)).getSubject();
-        Cart cart = cartRepository.getByUsername(username);
+        Cart cart = cartRepository.getByUsernameAndShopId(username, shopId);
         Good good = goodRepository.getById(goodInCart.getGoodId());
         if(cart!=null && good!= null) {
             goodInCart.setBoughtAmount(
@@ -117,12 +118,11 @@ public class CartService {
             throw new Exception();
     }
 
-    public String buyAllFromCart(String token, String paymentMethod) throws Exception {
+    public String buyAllFromCart(String token, String shopId, String paymentMethod) throws Exception {
         String username = JWT.decode(token.substring(7)).getSubject();
-        Cart cart = cartRepository.getByUsername(username);
+        Cart cart = cartRepository.getByUsernameAndShopId(username, shopId);
         ArrayList<BoughtGood> boughtGoods = new ArrayList<>();
         List<GoodInCart> goodInCarts = cart.getGoodInCarts();
-        String shopId = goodRepository.getById(goodInCarts.get(0).getGoodId()).getShopId();
         for (GoodInCart goodInCart: goodInCarts) {
             Good good = goodRepository.getById(goodInCart.getGoodId());
             boughtGoods.add(
