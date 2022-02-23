@@ -131,8 +131,6 @@ public class CartService {
                             good.getCost(),
                             goodInCart.getBoughtAmount(),
                             good.getCategoriesIds().stream().map(i -> categoryRepository.getById(i)).collect(Collectors.toList())));
-            good.setAmount(good.getAmount()-goodInCart.getBoughtAmount());
-            goodRepository.save(good);
         }
         Receipt receipt = new Receipt(username, paymentMethod, shopId, boughtGoods);
         cart.getGoodInCarts().clear();
@@ -147,5 +145,12 @@ public class CartService {
             throw new BuysServiceNotFoundException();
         else if(receiptResponseEntity.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR)
             throw new BuysServiceInternalErrorException();
-        else return receiptResponseEntity.toString();
+        else {
+            for (GoodInCart goodInCart: goodInCarts) {
+                Good good = goodRepository.getById(goodInCart.getGoodId());
+                good.setAmount(good.getAmount()-goodInCart.getBoughtAmount());
+                goodRepository.save(good);
+            }
+            return receiptResponseEntity.toString();
+        }
     }}
