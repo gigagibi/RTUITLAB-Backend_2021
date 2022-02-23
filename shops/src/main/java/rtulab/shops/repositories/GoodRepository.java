@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface GoodRepository  extends MongoRepository<Good, String> {
     Good getById(String id);
-    List<Good> getAllByShopId(String shopId);
-    Good getGoodByShopIdAndId(String shopId, String goodId);
+    List<Good> findAllByShopId(String shopId);
+    Good findGoodByShopIdAndId(String shopId, String goodId);
 }

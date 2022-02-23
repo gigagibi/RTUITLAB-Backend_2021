@@ -47,4 +47,9 @@ public class GoodController {
     public Good updateGood(@PathVariable(name = "good_id") String goodId, @RequestBody Good good) {
         return goodService.update(goodId, good);
     }
+
+    @GetMapping("/shop/{shop_id}/category/{category_id}")
+    public List<Good> getGoodsFromShopByCategories(@PathVariable(name = "shop_id") String shopId, @PathVariable(name = "category_id") String categoryId) {
+        return goodService.getAllFromShopByCategories(shopId, categoryId);
+    }
 }

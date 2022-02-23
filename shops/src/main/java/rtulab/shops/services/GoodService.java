@@ -6,6 +6,7 @@ import rtulab.shops.models.mongoDocuments.Good;
 import rtulab.shops.repositories.GoodRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,10 +37,14 @@ public class GoodService {
     }
 
     public Good getByIdFromShop(String shopId, String goodId) {
-        return goodRepository.getGoodByShopIdAndId(shopId, goodId);
+        return goodRepository.findGoodByShopIdAndId(shopId, goodId);
     }
 
     public List<Good> getAllFromShop(String shopId) {
-        return goodRepository.getAllByShopId(shopId);
+        return goodRepository.findAllByShopId(shopId);
+    }
+
+    public List<Good> getAllFromShopByCategories(String shopId, String categoryId) {
+        return goodRepository.findAllByShopId(shopId).stream().filter(g -> g.getCategoriesIds().contains(categoryId)).collect(Collectors.toList());
     }
 }
