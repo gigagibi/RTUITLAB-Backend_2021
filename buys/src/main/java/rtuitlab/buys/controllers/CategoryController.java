@@ -13,6 +13,8 @@ import java.util.List;
 public class CategoryController {
     private CategoryService categoryService;
 
+    // admin methods
+
     @GetMapping("/admin")
     public List<Category> getCategories() {
         return categoryService.getAll();
@@ -22,6 +24,18 @@ public class CategoryController {
     public List<Category> createCategory(@RequestBody Category category) {
         return categoryService.create(category);
     }
+
+    @DeleteMapping("/admin/{category_id}")
+    public List<Category> deleteCategory (@PathVariable(name = "category_id") String categoryId) {
+        return categoryService.delete(categoryId);
+    }
+
+    @PutMapping("/admin/{category_id}")
+    public Category updateCategory (@PathVariable(name = "category_id") String categoryId, @RequestBody Category category) {
+        return categoryService.update(categoryId, category);
+    }
+
+    // user methods
 
     @GetMapping("/shops_categories")
     public List<Category> updateCategoriesForGood(@RequestHeader("Authorization") String token, @RequestParam(name = "good_id") String goodId) {

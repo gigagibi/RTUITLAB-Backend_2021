@@ -13,6 +13,8 @@ import java.util.List;
 public class BoughtGoodController {
     private BoughtGoodService boughtGoodService;
 
+    //admin methods
+
     @GetMapping("/admin")
     public List<BoughtGood> getGoods() {
         return boughtGoodService.getAll();

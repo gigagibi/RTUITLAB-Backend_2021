@@ -34,4 +34,7 @@ public class BoughtGood {
 
     @ManyToMany
     private List<Category> categories;
+
+    @ManyToMany
+    private List<CustomCategory> customCategories;
 }

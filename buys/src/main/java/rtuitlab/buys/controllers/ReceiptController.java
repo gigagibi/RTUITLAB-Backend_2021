@@ -19,7 +19,7 @@ public class ReceiptController {
     }
 
     @GetMapping("/my/{receipt_id}")
-    public Receipt getReceipt(@RequestHeader("Authorization") String token, @PathVariable(name = "receipt_id") Long receiptId) {
+    public Receipt getMyReceipt(@RequestHeader("Authorization") String token, @PathVariable(name = "receipt_id") Long receiptId) {
         return receiptService.getByTokenAndId(token, receiptId);
     }
 
