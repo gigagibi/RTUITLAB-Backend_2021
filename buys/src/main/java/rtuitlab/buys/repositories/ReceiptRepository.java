@@ -7,14 +7,10 @@ import rtuitlab.buys.models.BoughtGood;
 import rtuitlab.buys.models.Receipt;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
     List<Receipt> getAllByUsername(String username);
 
     Receipt getByUsernameAndId(String username, Long id);
 
-    @Modifying
-    @Query(value = "update Receipt set paymentMethod=?2, shopId=?3, boughtGoods=?4 where id=?1")
-    Receipt update(Long id, String paymentMethod, String shopId, List<BoughtGood> boughtGoods);
 }

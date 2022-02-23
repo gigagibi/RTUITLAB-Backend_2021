@@ -22,4 +22,5 @@ public class Good {
     private Integer amount;
     private List<String> categoriesIds;
     private String shopId;
+    private String productId;
 }

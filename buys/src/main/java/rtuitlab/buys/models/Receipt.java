@@ -31,5 +31,4 @@ public class Receipt {
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<BoughtGood> boughtGoods;
-
 }

@@ -8,7 +8,4 @@ import rtuitlab.buys.models.Category;
 public interface CategoryRepository extends JpaRepository<Category, String> {
     Category getByName(String name);
 
-    @Modifying
-    @Query(value = "update Category set name = ?2 where id = ?1")
-    Category update(String id, String categoryName);
 }

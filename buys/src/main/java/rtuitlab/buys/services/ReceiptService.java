@@ -40,7 +40,8 @@ public class ReceiptService {
     }
 
     public Receipt update(Long id, Receipt receipt) {
-        receiptRepository.update(id, receipt.getPaymentMethod(), receipt.getShopId(), receipt.getBoughtGoods());
+        receipt.setId(id);
+        receiptRepository.save(receipt);
         return receiptRepository.getById(id);
     }
 

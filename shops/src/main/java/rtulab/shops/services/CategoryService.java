@@ -1,10 +1,10 @@
 package rtulab.shops.services;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rtulab.shops.models.mongoDocuments.Category;
 import rtulab.shops.repositories.CategoryRepository;
+import rtulab.shops.repositories.GoodRepository;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryService {
     private CategoryRepository categoryRepository;
+    private GoodRepository goodRepository;
 
     public Category get(String id) {
         return categoryRepository.getById(id);
@@ -34,5 +35,9 @@ public class CategoryService {
     public List<Category> delete(String id) {
         categoryRepository.deleteById(id);
         return categoryRepository.findAll();
+    }
+
+    public List<Category> getCategoriesFromGood(String goodId) {
+        return categoryRepository.findAllByIdIn(goodRepository.getById(goodId).getCategoriesIds());
     }
 }

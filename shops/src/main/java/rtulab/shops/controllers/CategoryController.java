@@ -13,9 +13,14 @@ import java.util.List;
 public class CategoryController {
     private CategoryService categoryService;
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     public List<Category> getCategories() {
         return categoryService.getAll();
+    }
+
+    @GetMapping("/")
+    public List<Category> getCategoriesFromGood(@RequestParam(name = "good_id") String goodId) {
+        return categoryService.getCategoriesFromGood(goodId);
     }
 
     @GetMapping("/{category_id}")
@@ -34,7 +39,7 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/{category_id}")
-    public Category createCategory(@PathVariable(name = "category_id") String categoryId, @RequestBody Category category) {
+    public Category updateCategory(@PathVariable(name = "category_id") String categoryId, @RequestBody Category category) {
         return categoryService.update(categoryId, category);
     }
 }

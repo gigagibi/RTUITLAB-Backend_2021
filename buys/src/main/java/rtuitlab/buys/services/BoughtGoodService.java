@@ -28,7 +28,8 @@ public class BoughtGoodService {
     }
 
     public BoughtGood update(Long id, BoughtGood boughtGood) {
-        boughtGoodRepository.update(id, boughtGood.getName(), boughtGood.getGoodId(), boughtGood.getCost(), boughtGood.getAmount(), boughtGood.getCategories());
+        boughtGood.setId(id);
+        boughtGoodRepository.save(boughtGood);
         return boughtGoodRepository.getById(id);
     }
 

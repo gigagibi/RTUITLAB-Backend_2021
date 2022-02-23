@@ -10,7 +10,5 @@ import java.util.List;
 import java.util.Set;
 
 public interface BoughtGoodRepository extends JpaRepository<BoughtGood, Long> {
-    @Modifying
-    @Query(value = "update BoughtGood set name=?2, goodId=?3, cost=?4, amount=?5, categories=?6 where id=?1")
-    BoughtGood update(Long id, String name, String goodId, Integer cost, Integer amount, List<Category> categories);
+    List<BoughtGood> getAllByGoodId(String goodId);
 }

@@ -32,6 +32,6 @@ public class BoughtGood {
     @Column(name = "amount")
     private Integer amount;
 
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    @ManyToMany
     private List<Category> categories;
 }
