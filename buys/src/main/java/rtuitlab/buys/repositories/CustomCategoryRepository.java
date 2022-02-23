@@ -6,5 +6,7 @@ import rtuitlab.buys.models.CustomCategory;
 import java.util.List;
 
 public interface CustomCategoryRepository extends JpaRepository<CustomCategory, Long> {
-    List<CustomCategory> getAllByUsername(String username);
+    List<CustomCategory> findAllByUsername(String username);
+    CustomCategory findByUsernameAndId(String username, Long id);
+    void deleteByUsernameAndId(String username, Long id);
 }

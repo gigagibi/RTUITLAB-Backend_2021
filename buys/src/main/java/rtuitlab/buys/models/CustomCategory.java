@@ -21,7 +21,6 @@ public class CustomCategory {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "good_id")
-    private String goodId;
-
+    @Column(name = "name")
+    private String name;
 }
