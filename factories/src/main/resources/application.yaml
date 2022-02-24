@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: factories
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+jwt:
+  secret: RTUITLAB
+server:
+  port: 3504
+factories:
+  factory-1:
+    products:
+      product-1:
+        - name: product-1
+          -
+      - product2
+
